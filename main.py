@@ -2,7 +2,7 @@ from telebot import TeleBot
 import emoji
 import time
 from diffi_algorythm import DH_Endpoint
-TOKEN = '5964534840:AAEtiR2cgME40xPJvrXPQxRtHwLvtLzPI6s'
+TOKEN = 'BOT_TOKEN'
 bot = TeleBot(TOKEN)
 nout = DH_Endpoint()
 dec_id = 0
