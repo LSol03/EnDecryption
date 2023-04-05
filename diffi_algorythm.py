@@ -33,16 +33,3 @@ class DH_Endpoint(object):
         for c in encrypted_message[:symb_index]:
             decrypted_message += chr(abs(ord(c)-key))
         return decrypted_message
-
-# Nout = DH_Endpoint()
-# n_full = Nout.generate_full_key()
-# enc = Nout.encrypt_message('hello my name is zuzi') + '&' + chr(n_full)
-# dec = Nout.decrypt_message(enc)
-# print(enc)
-# print(dec)
-# me = DH_Endpoint()
-# me_full = me.generate_full_key()
-# enc = me.encrypt_message('oooooooo i can say yeee') + '&' + chr(me_full)
-# dec = me.decrypt_message(enc)
-# print(enc)
-# print(dec)
