@@ -2,7 +2,8 @@ from telebot import TeleBot
 import emoji
 import time
 from diffi_algorythm import DH_Endpoint
-TOKEN = 'BOT_TOKEN'
+import base64
+TOKEN = 'bot token'
 bot = TeleBot(TOKEN)
 nout = DH_Endpoint()
 dec_id = 0
@@ -11,6 +12,7 @@ enc_id = 0
 def start(message):
     bot.send_message(message.chat.id, 'Hi)\nI can encrypted or decrypted your text.' + emoji.emojize(':man_technologist:')
                      +'\nIf you have question then input command /help or choose it in menu.')
+    global nout
 
 @bot.message_handler(commands=["help"])
 def help(message):
@@ -27,13 +29,44 @@ def study(message):
 def encrypt(message):
     global enc_id
     enc_id = message.message_id
-    bot.send_message(message.chat.id, 'Input your text')
+    bot.send_message(message.chat.id, 'Input your txt/img/doc')
 
 @bot.message_handler(commands=["decrypt"])
-def decrypt(message):
+def encrypt(message):
     global dec_id
     dec_id = message.message_id
-    bot.send_message(message.chat.id, 'Input your text')
+    bot.send_message(message.chat.id, 'Input your txt/img/doc')
+
+@bot.message_handler(func=lambda m: True, content_types=['photo'])
+def get_broadcast_picture(message):
+    file_path = bot.get_file(message.photo[0].file_id).file_path
+    file = bot.download_file(file_path)
+    with open("python1.png", "wb") as code:
+        code.write(file)
+    with open("python1.png", "rb") as image2string:
+        converted_string = base64.b64encode(image2string.read())
+    with open('encode.bin', "wb") as file:
+        file.write(converted_string)
+
+    file = open('encode.bin', 'rb')
+    byte = file.read()
+    file.close()
+
+    decodeit = open('hello_level.jpeg', 'wb')
+    decodeit.write(base64.b64decode((byte)))
+    decodeit.close()
+
+    bot.send_message(message.chat.id, 'Encryption process...')
+    time.sleep(2.5)
+    with open("encode.bin", "rb") as misc:
+        f = misc.read()
+    bot.send_document(message.chat.id, f)
+
+@bot.message_handler(content_types=["document"])
+def get_doc(message):
+    bot.send_message(message.chat.id, 'Decryption process...')
+    time.sleep(2.5)
+    bot.send_photo(message.chat.id, photo=open('hello_level.jpeg', 'rb'))
 
 @bot.message_handler(content_types=['text'])
 def get_text_message(message):
